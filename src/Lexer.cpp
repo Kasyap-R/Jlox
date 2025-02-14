@@ -107,13 +107,12 @@ auto Lexer::handle_comment_block() -> void {
                 level_nested++;
             }
         } else if (c == '*') {
-            if (match('\\')) {
+            if (match('/')) {
                 level_nested--;
             }
         }
     }
 }
-/*  */
 
 auto Lexer::handle_identifier() -> void {
     while (is_alpha(peek())) {
