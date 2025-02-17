@@ -62,6 +62,8 @@ struct Token {
     Token(const TokenType &type, const std::string &lexeme, const int line_num)
         : type(type), lexeme(lexeme), line_num(line_num) {}
 
+    static auto create_eof() -> Token { return Token{TokenType::EoF, "", 0}; }
+
     friend auto operator<<(std::ostream &os, const Token &token)
         -> std::ostream &;
 };

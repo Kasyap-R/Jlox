@@ -1,8 +1,12 @@
 #include "ErrorReporter.h"
+#include "ExprVisitor.h"
 #include "Lexer.h"
+#include "Parser.h"
+
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <optional>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -10,10 +14,14 @@
 auto run(const std::string &source) -> void {
     Lexer lexer(source);
     std::vector<Token> tokens = lexer.scan_tokens();
+    Parser parser = Parser(tokens);
+    std::optional<Expr> parser_result = parser.parse_input();
 
-    for (const Token &token : tokens) {
-        std::cout << token;
+    if (ErrorReporter::get_instance().has_error) {
+        return;
     }
+
+    std::cout << AstPrinter().print(parser_result.value());
 }
 
 auto run_file(const std::filesystem::path &path) -> void {
@@ -45,6 +53,7 @@ auto run_prompt() -> void {
 
 auto main(int argc, char *argv[]) -> int {
     std::cout << argv[0] << "\n";
+
     // Note: argc counts the program itself (i.e. "./jlox") as an argument
     if (argc > 2) {
         throw std::runtime_error("Expected Usage: ./jlox [script]");

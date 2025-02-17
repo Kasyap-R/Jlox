@@ -18,7 +18,7 @@ class Lexer {
     int current = 0;
     int line = 1;
 
-    static auto syntax_error(int line, const std::string &msg) -> void;
+    static auto syntax_error(const int line, const std::string &msg) -> void;
 
     auto is_at_end() -> bool;
     auto scan_token() -> void;

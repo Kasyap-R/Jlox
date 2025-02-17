@@ -207,10 +207,10 @@ auto Lexer::add_token(TokenType type) -> void {
     tokens.emplace_back(type, lexeme, line);
 }
 
-auto Lexer::syntax_error(int line, const std::string &msg) -> void {
+auto Lexer::syntax_error(const int line, const std::string &msg) -> void {
     ErrorReporter &reporter = ErrorReporter::get_instance();
     reporter.has_error = true;
-    reporter.report_error(line, msg);
+    reporter.report_lexer_error(line, msg);
 }
 
 auto Lexer::scan_tokens() -> std::vector<Token> {
